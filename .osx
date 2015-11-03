@@ -708,6 +708,23 @@ else
 	/bin/mv "$targetVolume/System/Library/PrivateFrameworks/CoreMediaIOServices.framework/Versions/A/Resources/VDC.plugin/Contents/VDC" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
 fi
 
+
+###############################################################################
+# Disable Guest Access                                                        #
+###############################################################################
+
+echo "Disabling Guest Account Login for $OS..."
+/usr/bin/dscl . -create /Users/Guest AuthenticationAuthority ";basic;"
+/usr/bin/dscl . -create /Users/Guest passwd "*"
+
+#Disables AFP Sharing for Allow guests to connect to shared folders
+echo "Disabling AFP Access for Guest Account..."
+/usr/bin/defaults write "$targetVolume/Library/Preferences/com.apple.AppleFileServer" guestAccess -bool no
+
+##Disables SMB Sharing for Allow guests to connect to shared folders
+echo "Disabling SMB Access for Guest Account..."
+/usr/bin/defaults write "$targetVolume/Library/Preferences/SystemConfiguration/com.apple.smb.server" AllowGuestAccess -bool no
+
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
