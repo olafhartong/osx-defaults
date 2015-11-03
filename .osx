@@ -689,6 +689,24 @@ defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool t
 # Hide the legal disclaimer
 #defaults write org.m0k.transmission WarningLegal -bool false
 
+###############################################################################
+# Disable iSight drivers                                                      #
+###############################################################################
+
+echo "Disabling the iSight Camera Drivers..."
+
+if [ -d "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/" ]; then
+	/bin/mv "$targetVolume/System/Library/Extensions/Apple_iSight.kext" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/QuickTime/QuickTimeUSBVDCDigitizer.component" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/PrivateFrameworks/CoreMediaIOServicesPrivate.framework/Versions/A/Resources/VDC.plugin" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/PrivateFrameworks/CoreMediaIOServices.framework/Versions/A/Resources/VDC.plugin/Contents/VDC" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+else
+	/bin/mkdir -p "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/Extensions/Apple_iSight.kext" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/QuickTime/QuickTimeUSBVDCDigitizer.component" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/PrivateFrameworks/CoreMediaIOServicesPrivate.framework/Versions/A/Resources/VDC.plugin" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+	/bin/mv "$targetVolume/System/Library/PrivateFrameworks/CoreMediaIOServices.framework/Versions/A/Resources/VDC.plugin/Contents/VDC" "$targetVolume/Library/Application Support/JAMF/DisabledExtensions/"
+fi
 
 ###############################################################################
 # Kill affected applications                                                  #
